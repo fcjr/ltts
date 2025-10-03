@@ -1,6 +1,6 @@
 [project]
 name = "ltts"
-version = "0.1.2"
+version = "0.0.0" # Updated by github action
 description = "Text-to-speech CLI using Kokoro TTS"
 readme = "README.md"
 license = "MIT"
