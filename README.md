@@ -4,26 +4,22 @@ Quick CLI for text-to-speech using Kokoro TTS. Runs locally on your machine.
 
 ## Install
 
-```bash
-pip install ltts
-```
-
-Or with uv:
+Recommended (fast, reproducible):
 
 ```bash
 uv tool install ltts
 ```
 
-Or run directly without installing:
+Run without installing:
 
 ```bash
 uvx ltts "hello world"
 ```
 
-For development:
+With pip:
 
 ```bash
-uv sync
+pip install ltts
 ```
 
 ## Usage
@@ -75,6 +71,17 @@ Kokoro supports 50+ voices across multiple languages:
 
 Full voice list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
 
+## Development
+
+```bash
+uv sync
+uv run ltts "hello world"            # run the CLI using local code
+uv run python -m ltts "hello world"  # alternative module form
+
+# optional: editable install
+uv pip install -e .
+```
+
 ## Notes
 
 - First run downloads the model (~330MB) to `~/.cache/huggingface/`
@@ -82,7 +89,6 @@ Full voice list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
 - Supports MP3, OGG, FLAC, and WAV output formats
 - Language code is auto-detected from voice prefix (or use `-l` to specify manually)
 - `--say` notes:
-  - Requires `sounddevice` (installed via `uv sync` or as a dependency).
   - Plays at 24 kHz on the default output device.
   - On Linux, ensure your user can access audio (PulseAudio/PipeWire running).
   - On macOS, you may see a permissions prompt for audio.
