@@ -86,6 +86,8 @@ uv run python -m ltts "hello world"  # alternative module form
 
 # optional: editable install
 uv pip install -e .
+
+./scripts/release.sh                 # release a new version
 ```
 
 ## Notes
