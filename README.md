@@ -6,7 +6,7 @@
 [![UV Friendly](https://img.shields.io/badge/uv-friendly-5A2DAA)](https://docs.astral.sh/uv/)
 [![CI Publish](https://img.shields.io/github/actions/workflow/status/fcjr/ltts/publish.yml?label=publish)](https://github.com/fcjr/ltts/actions/workflows/publish.yml)
 
-Quick CLI for text-to-speech using Kokoro TTS. Runs locally on your machine.
+Quick CLI for local text-to-speech using Kokoro TTS.
 
 ## Install
 
