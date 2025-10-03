@@ -20,6 +20,7 @@ dependencies = [
     "sounddevice>=0.4.6",
     "torch>=2.8.0",
     "unidic>=1.1.0",
+    "en-core-web-sm",
 ]
 
 [project.urls]
@@ -31,3 +32,6 @@ ltts = "ltts:main"
 
 [tool.uv]
 package = true
+
+[tool.uv.sources]
+en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl" }
