@@ -1,0 +1,42 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch: {}
+
+jobs:
+  build-and-publish:
+    name: Build and publish package (uv)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@v4
+        with:
+          python-version: '3.12'
+
+      - name: Derive version from tag and update pyproject
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          VERSION: ${{ github.ref_name }}
+        run: |
+          VERSION="${VERSION#v}"
+          echo "Tag: ${{ github.ref_name }} -> Version: ${VERSION}"
+          VERSION="${VERSION}" uv run python scripts/set_version_from_tag.py
+          grep -nE '^version\s*=\s*"' pyproject.toml || true
+
+      - name: Build sdist and wheel with uv
+        run: |
+          uv build
+
+      - name: Publish to PyPI with uv
+        env:
+          UV_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          uv publish --skip-existing
