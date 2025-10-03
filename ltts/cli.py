@@ -5,6 +5,7 @@ import argparse
 import sys
 from pathlib import Path
 import numpy as np
+import logging
 
 # Jieba emits SyntaxWarnings for regex escape sequences and a pkg_resources deprecation UserWarning
 warnings.filterwarnings('ignore', category=SyntaxWarning)
@@ -19,9 +20,14 @@ warnings.filterwarnings('ignore', category=FutureWarning, module=r'^torch\.nn\.u
 if platform.system() == 'Darwin':
     os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 
+# Late import for warning suppression
 from kokoro import KPipeline  # noqa: E402
 import soundfile as sf  # noqa: E402
 import sounddevice as sd  # noqa: E402
+import jieba # noqa: E402
+
+# Suppress jieba loading messages
+jieba.setLogLevel(logging.ERROR)
 
 # Initialize pipeline globally (loaded once)
 pipeline = None
