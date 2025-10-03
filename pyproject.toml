@@ -1,5 +1,5 @@
 [project]
-name = "tts"
+name = "ltts"
 version = "0.1.0"
 description = "Text-to-speech CLI using Kokoro TTS"
 readme = "README.md"
@@ -16,11 +16,11 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/fcjr/tts"
-Issues = "https://github.com/fcjr/tts/issues"
+Repository = "https://github.com/fcjr/ltts"
+Issues = "https://github.com/fcjr/ltts/issues"
 
 [project.scripts]
-tts = "tts:main"
+ltts = "ltts:main"
 
 [tool.uv]
 package = true

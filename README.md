@@ -1,4 +1,4 @@
-# tts
+# ltts
 
 Quick CLI for text-to-speech using Kokoro TTS.
 
@@ -12,26 +12,26 @@ uv sync
 
 ```bash
 # Basic usage (outputs to output.mp3)
-uv run tts "hello world"
+uv run ltts "hello world"
 
 # Specify output file
-uv run tts "your text here" -o speech.mp3
+uv run ltts "your text here" -o speech.mp3
 
 # Different formats supported
-uv run tts "test" -o output.ogg   # OGG
-uv run tts "test" -o output.flac  # FLAC
-uv run tts "test" -o output.wav   # WAV
+uv run ltts "test" -o output.ogg   # OGG
+uv run ltts "test" -o output.flac  # FLAC
+uv run ltts "test" -o output.wav   # WAV
 
 # Use different voice
-uv run tts "custom voice" -v am_adam    # Male American English
-uv run tts "bonjour" -v ff_siwis        # French
-uv run tts "こんにちは" -v jf_alpha      # Japanese
+uv run ltts "custom voice" -v am_adam    # Male American English
+uv run ltts "bonjour" -v ff_siwis        # French
+uv run ltts "こんにちは" -v jf_alpha      # Japanese
 
 # Specify language code manually
-uv run tts "こんにちは" -v jf_alpha -l j  # Japanese with explicit lang code
+uv run ltts "こんにちは" -v jf_alpha -l j  # Japanese with explicit lang code
 
 # See all available voices
-uv run tts --help
+uv run ltts --help
 ```
 
 ## Available Voices
