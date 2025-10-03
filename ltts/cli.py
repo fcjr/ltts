@@ -146,7 +146,7 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
                        default='af_heart')
     parser.add_argument('-l', '--lang', help='Language code: a/b/e/f/h/i/j/p/z (auto-detected from voice if not specified)',
                        default=None)
-    parser.add_argument('--say', action='store_true', help='Play audio through speakers instead of writing a file (ignores -o/--output)')
+    parser.add_argument('-s', '--say', action='store_true', help='Play audio through speakers instead of writing a file (ignores -o/--output)')
 
     args = parser.parse_args()
 
