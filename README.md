@@ -1,6 +1,6 @@
 # ltts
 
-Quick CLI for text-to-speech using Kokoro TTS.
+Quick CLI for text-to-speech using Kokoro TTS. Runs locally on your machine.
 
 ## Install
 
