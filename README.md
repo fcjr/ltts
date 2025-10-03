@@ -27,6 +27,9 @@ uv run tts "custom voice" -v am_adam    # Male American English
 uv run tts "bonjour" -v ff_siwis        # French
 uv run tts "こんにちは" -v jf_alpha      # Japanese
 
+# Specify language code manually
+uv run tts "こんにちは" -v jf_alpha -l j  # Japanese with explicit lang code
+
 # See all available voices
 uv run tts --help
 ```
@@ -50,5 +53,6 @@ Full voice list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
 ## Notes
 
 - First run downloads the model (~330MB) to `~/.cache/huggingface/`
+- **Japanese voices**: First use automatically downloads the Japanese dictionary (~526MB one-time download)
 - Supports MP3, OGG, FLAC, and WAV output formats
-- Pure Python, no external dependencies
+- Language code is auto-detected from voice prefix (or use `-l` to specify manually)
