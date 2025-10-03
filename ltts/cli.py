@@ -6,18 +6,18 @@ import sys
 from pathlib import Path
 import numpy as np
 
-# Enable MPS fallback on macOS
-if platform.system() == 'Darwin':
-    os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
+# Jieba emits SyntaxWarnings for regex escape sequences and a pkg_resources deprecation UserWarning
+warnings.filterwarnings('ignore', category=SyntaxWarning)
+warnings.filterwarnings('ignore', category=UserWarning, module=r'^jieba\._compat$')
 
 # Suppress specific noisy warnings early, before heavy imports
 # PyTorch-specific noise
 warnings.filterwarnings('ignore', category=UserWarning, module=r'^torch\.nn\.modules\.rnn$')
 warnings.filterwarnings('ignore', category=FutureWarning, module=r'^torch\.nn\.utils\.weight_norm$')
 
-# Jieba emits SyntaxWarnings for regex escape sequences and a pkg_resources deprecation UserWarning
-warnings.filterwarnings('ignore', category=SyntaxWarning, module=r'^jieba(\.|$)')
-warnings.filterwarnings('ignore', category=UserWarning, module=r'^jieba\._compat$')
+# Enable MPS fallback on macOS
+if platform.system() == 'Darwin':
+    os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 
 from kokoro import KPipeline  # noqa: E402
 import soundfile as sf  # noqa: E402
