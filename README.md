@@ -51,6 +51,10 @@ ltts "こんにちは" -v jf_alpha -l j  # Japanese with explicit lang code
 # Play audio through speakers instead of writing a file (ignores -o/--output)
 ltts "Hello world" --say
 
+# Read text from stdin (pipe)
+echo "Hello from pipe" | ltts --say
+cat notes.txt | ltts -o notes.mp3
+
 # See all available voices
 ltts --help
 ```

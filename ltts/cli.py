@@ -2,6 +2,7 @@ import os
 import platform
 import warnings
 import argparse
+import sys
 from pathlib import Path
 import numpy as np
 
@@ -138,7 +139,7 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
         ''',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument('text', help='Text to convert to speech')
+    parser.add_argument('text', nargs='?', help='Text to convert to speech (reads from stdin if omitted and piped)')
     parser.add_argument('-o', '--output', help='Output audio file path (default: output.mp3). Ignored when using --say',
                        default='output.mp3')
     parser.add_argument('-v', '--voice', help='Voice to use (default: af_heart)',
@@ -149,10 +150,17 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
 
     args = parser.parse_args()
 
+    # Resolve text from arg or stdin when piped
+    input_text = args.text
+    if input_text is None and not sys.stdin.isatty():
+        input_text = sys.stdin.read().rstrip('\n')
+    if not input_text:
+        parser.error('No text provided. Pass TEXT or pipe input to stdin.')
+
     if args.say:
         print("Speaking...")
         try:
-            speak(args.text, args.voice, args.lang)
+            speak(input_text, args.voice, args.lang)
         except Exception as e:
             print(f"Audio playback failed: {e}")
             return
@@ -160,7 +168,7 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
         return
     output_path = Path(args.output)
     print("Generating speech...")
-    result = text_to_speech(args.text, output_path, args.voice, args.lang)
+    result = text_to_speech(input_text, output_path, args.voice, args.lang)
     print(f"✓ Saved to {result}")
 
 if __name__ == "__main__":
