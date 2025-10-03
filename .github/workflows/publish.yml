@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -35,8 +36,6 @@ jobs:
         run: |
           uv build
 
-      - name: Publish to PyPI with uv
-        env:
-          UV_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish to PyPI with uv (Trusted Publisher)
         run: |
           uv publish --check-url https://pypi.org/simple
