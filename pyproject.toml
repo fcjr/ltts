@@ -11,6 +11,7 @@ dependencies = [
     "misaki[ja,zh]>=0.9.4",
     "pip>=25.2",
     "soundfile>=0.13.1",
+    "sounddevice>=0.4.6",
     "torch>=2.8.0",
     "unidic>=1.1.0",
 ]

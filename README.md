@@ -48,6 +48,9 @@ ltts "こんにちは" -v jf_alpha      # Japanese
 # Specify language code manually
 ltts "こんにちは" -v jf_alpha -l j  # Japanese with explicit lang code
 
+# Play audio through speakers instead of writing a file (ignores -o/--output)
+ltts "Hello world" --say
+
 # See all available voices
 ltts --help
 ```
@@ -74,3 +77,8 @@ Full voice list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
 - **Japanese voices**: First use automatically downloads the Japanese dictionary (~526MB one-time download)
 - Supports MP3, OGG, FLAC, and WAV output formats
 - Language code is auto-detected from voice prefix (or use `-l` to specify manually)
+- `--say` notes:
+  - Requires `sounddevice` (installed via `uv sync` or as a dependency).
+  - Plays at 24 kHz on the default output device.
+  - On Linux, ensure your user can access audio (PulseAudio/PipeWire running).
+  - On macOS, you may see a permissions prompt for audio.

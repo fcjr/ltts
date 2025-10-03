@@ -20,6 +20,7 @@ warnings.filterwarnings('ignore', category=UserWarning, module=r'^jieba\._compat
 
 from kokoro import KPipeline  # noqa: E402
 import soundfile as sf  # noqa: E402
+import sounddevice as sd  # noqa: E402
 
 # Initialize pipeline globally (loaded once)
 pipeline = None
@@ -98,6 +99,21 @@ def text_to_speech(text, output_path, voice='af_heart', lang_code=None):
 
     return output_path
 
+def speak(text, voice='af_heart', lang_code=None):
+    """Play generated speech through the system audio output."""
+    if lang_code is None:
+        lang_code = get_lang_code_from_voice(voice)
+    pipeline = get_pipeline(lang_code)
+
+    # Stream chunks to output while collecting to avoid gaps
+    audio_chunks = []
+    for _, _, audio in pipeline(text, voice=voice):
+        audio_chunks.append(audio)
+
+    full_audio = np.concatenate(audio_chunks)
+    sd.play(full_audio, samplerate=24000)
+    sd.wait()
+
 def main():
     parser = argparse.ArgumentParser(
         description='Convert text to speech using Kokoro TTS',
@@ -123,17 +139,26 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument('text', help='Text to convert to speech')
-    parser.add_argument('-o', '--output', help='Output audio file path (default: output.mp3)',
+    parser.add_argument('-o', '--output', help='Output audio file path (default: output.mp3). Ignored when using --say',
                        default='output.mp3')
     parser.add_argument('-v', '--voice', help='Voice to use (default: af_heart)',
                        default='af_heart')
     parser.add_argument('-l', '--lang', help='Language code: a/b/e/f/h/i/j/p/z (auto-detected from voice if not specified)',
                        default=None)
+    parser.add_argument('--say', action='store_true', help='Play audio through speakers instead of writing a file (ignores -o/--output)')
 
     args = parser.parse_args()
 
+    if args.say:
+        print("Speaking...")
+        try:
+            speak(args.text, args.voice, args.lang)
+        except Exception as e:
+            print(f"Audio playback failed: {e}")
+            return
+        print("✓ Done")
+        return
     output_path = Path(args.output)
-
     print("Generating speech...")
     result = text_to_speech(args.text, output_path, args.voice, args.lang)
     print(f"✓ Saved to {result}")
