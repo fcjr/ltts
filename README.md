@@ -1,5 +1,11 @@
 # ltts
 
+[![PyPI Version](https://img.shields.io/pypi/v/ltts)](https://pypi.org/project/ltts/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/ltts)](https://pypi.org/project/ltts/)
+[![License](https://img.shields.io/pypi/l/ltts)](LICENSE)
+[![UV Friendly](https://img.shields.io/badge/uv-friendly-5A2DAA)](https://docs.astral.sh/uv/)
+[![CI Publish](https://img.shields.io/github/actions/workflow/status/fcjr/ltts/publish.yml?label=publish)](https://github.com/fcjr/ltts/actions/workflows/publish.yml)
+
 Quick CLI for text-to-speech using Kokoro TTS. Runs locally on your machine.
 
 ## Install
