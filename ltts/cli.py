@@ -9,9 +9,14 @@ import numpy as np
 if platform.system() == 'Darwin':
     os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 
-# Suppress PyTorch warnings
-warnings.filterwarnings('ignore', category=UserWarning, module='torch.nn.modules.rnn')
-warnings.filterwarnings('ignore', category=FutureWarning, module='torch.nn.utils.weight_norm')
+# Suppress specific noisy warnings early, before heavy imports
+# PyTorch-specific noise
+warnings.filterwarnings('ignore', category=UserWarning, module=r'^torch\.nn\.modules\.rnn$')
+warnings.filterwarnings('ignore', category=FutureWarning, module=r'^torch\.nn\.utils\.weight_norm$')
+
+# Jieba emits SyntaxWarnings for regex escape sequences and a pkg_resources deprecation UserWarning
+warnings.filterwarnings('ignore', category=SyntaxWarning, module=r'^jieba(\.|$)')
+warnings.filterwarnings('ignore', category=UserWarning, module=r'^jieba\._compat$')
 
 from kokoro import KPipeline  # noqa: E402
 import soundfile as sf  # noqa: E402
