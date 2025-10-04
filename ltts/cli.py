@@ -106,22 +106,30 @@ def text_to_speech(text, output_path, voice='af_heart', lang_code=None):
 
     return output_path
 
-def speak(text, voice='af_heart', lang_code=None):
+def speak(text, voice='af_heart', lang_code=None, stream=False):
     """Play generated speech through the system audio output."""
     if lang_code is None:
         lang_code = get_lang_code_from_voice(voice)
     pipeline = get_pipeline(lang_code)
 
-    print("Preparing audio...")
-    # Stream chunks to output while collecting to avoid gaps
-    audio_chunks = []
-    for _, _, audio in pipeline(text, voice=voice):
-        audio_chunks.append(audio)
+    if stream:
+        first_chunk = True
+        for _, _, audio in pipeline(text, voice=voice):
+            if first_chunk:
+                print("Speaking...")
+                first_chunk = False
+            sd.play(audio, samplerate=24000)
+            sd.wait()
+    else:
+        print("Preparing audio...")
+        audio_chunks = []
+        for _, _, audio in pipeline(text, voice=voice):
+            audio_chunks.append(audio)
 
-    full_audio = np.concatenate(audio_chunks)
-    print("Speaking...")
-    sd.play(full_audio, samplerate=24000)
-    sd.wait()
+        full_audio = np.concatenate(audio_chunks)
+        print("Speaking...")
+        sd.play(full_audio, samplerate=24000)
+        sd.wait()
 
 def main():
     parser = argparse.ArgumentParser(
@@ -155,6 +163,7 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
     parser.add_argument('-l', '--lang', help='Language code: a/b/e/f/h/i/j/p/z (auto-detected from voice if not specified)',
                        default=None)
     parser.add_argument('-s', '--say', action='store_true', help='Play audio through speakers instead of writing a file (ignores -o/--output)')
+    parser.add_argument('-c', '--chunk', action='store_true', help='Stream audio chunks as they are generated for faster initial playback (use with -s/--say). May have brief pauses between chunks on slower hardware')
 
     args = parser.parse_args()
 
@@ -167,7 +176,7 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
 
     if args.say:
         try:
-            speak(input_text, args.voice, args.lang)
+            speak(input_text, args.voice, args.lang, args.chunk)
         except Exception as e:
             print(f"Audio playback failed: {e}")
             return

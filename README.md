@@ -53,6 +53,10 @@ ltts "こんにちは" -v jf_alpha -l j  # Japanese with explicit lang code
 # Play audio through speakers instead of writing a file (ignores -o/--output)
 ltts "Hello world" --say
 
+# Stream audio chunks as they're generated (faster initial playback, useful for longer audio files)
+# May have brief pauses between chunks on slower hardware
+ltts "Hello world" --say --chunk
+
 # Read text from stdin (pipe)
 echo "Hello from pipe" | ltts --say
 cat notes.txt | ltts -o notes.mp3
