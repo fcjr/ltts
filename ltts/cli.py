@@ -112,12 +112,14 @@ def speak(text, voice='af_heart', lang_code=None):
         lang_code = get_lang_code_from_voice(voice)
     pipeline = get_pipeline(lang_code)
 
+    print("Preparing audio...")
     # Stream chunks to output while collecting to avoid gaps
     audio_chunks = []
     for _, _, audio in pipeline(text, voice=voice):
         audio_chunks.append(audio)
 
     full_audio = np.concatenate(audio_chunks)
+    print("Speaking...")
     sd.play(full_audio, samplerate=24000)
     sd.wait()
 
@@ -164,7 +166,6 @@ Full list: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
         parser.error('No text provided. Pass TEXT or pipe input to stdin.')
 
     if args.say:
-        print("Speaking...")
         try:
             speak(input_text, args.voice, args.lang)
         except Exception as e:
